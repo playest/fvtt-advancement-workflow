@@ -6,10 +6,10 @@ interface CharacterSheet {
 
 interface SuperFeature {
     name: string,
+    level?: number,
     state: SuperFeatureState,
     choiceRule: ChoiceRule,
-    level?: number,
-    choices: (SuperFeature | AdvancementActionWithLevel | AdvancementAction)[],
+    choices: (SuperFeature | AdvancementAction)[],
 }
 
 type SuperFeatureState = "dormant" | "waiting" | "processed";
@@ -35,19 +35,8 @@ interface ChooseGroups {
     groups: number[][],
 }
 
-interface AdvancementActionWithLevel {
-    /** The level at which this feature may be added. */
-    level: number | null,
-    advancementAction: AdvancementAction,
-}
-
-type AdvancementAction = NamedAdvancementAction | GroupedAdvancementAction | BasicAdvancementAction;
+type AdvancementAction = (GroupedAdvancementAction | BasicAdvancementAction) & { level?: number };
 type BasicAdvancementAction = GainProficiency | GainFeature | GainLanguage | GainEquipement | GainCurrency | GainAbilityPoints | GainBaseSpeed | GainHitDice | GainMaxHp;
-
-interface NamedAdvancementAction {
-    name: string,
-    advancementAction: BasicAdvancementAction
-};
 
 interface GroupedAdvancementAction {
     name: string,
@@ -110,7 +99,7 @@ type FeatureType = "feature" | "race" | "subrace" | "class" | "subclass" | "feat
 
 // Example
 
-let MyCleric: CharacterSheet = {
+let myCleric: CharacterSheet = {
     features: [], // empty, fill this array is not the point of this example, this will be done by the advancement workflow
     superFeatures: [
         {
@@ -208,11 +197,11 @@ let MyCleric: CharacterSheet = {
                     choices: [
                         {
                             name: "Ability Score Increase",
-                            advancementAction: { attribute: "dexterity", bonus: 2 }
+                            advancementActions: [{ attribute: "dexterity", bonus: 2 }]
                         },
                         {
                             name: "Speed",
-                            advancementAction: { type: "walk", distance: 30 }
+                            advancementActions: [{ type: "walk", distance: 30 }]
                         },
                         { feature: "Keen Senses" },
                         {
@@ -243,7 +232,7 @@ let MyCleric: CharacterSheet = {
                         },
                         {
                             name: "Speed",
-                            advancementAction: { type: "walk", distance: 30 }
+                            advancementActions: [{ type: "walk", distance: 30 }]
                         },
                         { feature: "Keen Senses" },
                         {
@@ -305,8 +294,9 @@ let MyCleric: CharacterSheet = {
                         },
                         // enough with the non levelled stuff, let's try to do levelled features
                         {
+                            name: "Second Wind",
                             level: 1,
-                            advancementAction: { feature: "Second Wind" }
+                            advancementActions: [{ feature: "Second Wind" }]
                         },
                         {
                             name: "Fighting Style",
@@ -323,14 +313,9 @@ let MyCleric: CharacterSheet = {
                             ]
                         },
                         {
+                            name: "Action Surge",
                             level: 2,
-                            advancementAction: { feature: "Action Surge" }
-                        },
-                        {
-                            // TODO why is this valid?
-                            level: 3,
-                            name: "test",
-                            advancementActions: []
+                            advancementActions: [{ feature: "Action Surge" }]
                         },
                         {
                             level: 3,
@@ -349,7 +334,7 @@ let MyCleric: CharacterSheet = {
                                 },
                                 {
                                     name: "Non-SRD Subclass for Fighter",
-                                    advancementAction: { feature: "Placeholder for subclass" }
+                                    advancementActions: [{ feature: "Placeholder for subclass" }]
                                 }
                             ]
                         }
