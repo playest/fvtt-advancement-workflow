@@ -1,108 +1,8 @@
-interface CharacterSheet {
-    superFeatures: SuperFeature[],
-    /** What is contained in the "Features" tab in the current character sheet */
-    features: Feature[],
-}
-
-interface SuperFeature {
-    name: string,
-    level?: number,
-    state: SuperFeatureState,
-    choiceRule: ChoiceRule,
-    choices: Choice[],
-}
-
-type Choice = SuperFeature | AdvancementAction;
-
-type SuperFeatureState = "dormant" | "waiting" | "processed";
-
-type ChoiceRule = ChooseAll | ChooseSome | ChooseGroups | ChooseSomeWithMandatory;
-
-interface ChooseAll {
-    chooseAll: true,
-}
-
-interface ChooseSome {
-    /** How many choice can be chosen in the `choices array`. Means something like "Choose one in..." or "Choose two in..." */
-    howMany: number,
-}
-
-interface ChooseSomeWithMandatory {
-    mandatory: number[],
-    howMany: number,
-}
-
-interface ChooseGroups {
-    /** The numbers specify the indices in the `choices` array in the parent SuperFeature. Could be something like [ [1, 2], [1, 3], [2, 3] ] */
-    groups: number[][],
-}
-
-type AdvancementAction = (GroupedAdvancementAction | BasicAdvancementAction) & { level?: number };
-type BasicAdvancementAction = GainProficiency | GainFeature | GainLanguage | GainEquipement | GainCurrency | GainAbilityPoints | GainBaseSpeed | GainHitDice | GainMaxHp;
-
-interface GroupedAdvancementAction {
-    name: string,
-    advancementActions: BasicAdvancementAction[]
-};
-
-interface GainProficiency {
-    skill: string,
-}
-
-interface GainFeature {
-    feature: string,
-}
-
-interface GainLanguage {
-    language: string,
-}
-
-interface GainEquipement {
-    itemName: string,
-}
-
-interface GainCurrency {
-    gp: number,
-}
-
-interface GainHitDice {
-    hitDiceGain: number,
-    type: "d4" | "d6" | "d8" | "d10" | "d12"
-}
-
-interface GainMaxHp {
-    maxHpGain: number,
-}
-
-interface GainBaseSpeed {
-    type: "walk" | "fly" | "burrow" | "climb" | "swim",
-    distance: number,
-}
-
-interface GainAbilityPoints {
-    attribute: Attributes,
-    bonus: number,
-}
-
-interface GainSavingThrow {
-    savingThrow: Attributes,
-}
-
-type Attributes = "strength" | "dexterity" | "constitution" | "intelligence" | "wisdom" | "charisma";
-
-/** Some basic feature that already exists in the game */
-interface Feature {
-    // We put only those 2 fields for this example
-    name: string,
-    type: FeatureType,
-}
-
-type FeatureType = "feature" | "race" | "subrace" | "class" | "subclass" | "feat" | "boon";
-
+"use strict";
+;
 // Example
-
-let myCleric: CharacterSheet = {
-    features: [], // empty, fill this array is not the point of this example, this will be done by the advancement workflow
+let myCleric = {
+    features: [],
     superFeatures: [
         {
             name: "Choose Background",
@@ -241,7 +141,7 @@ let myCleric: CharacterSheet = {
                             name: "Languages",
                             state: "dormant",
                             choiceRule: {
-                                mandatory: [0], // 0 is the index of "common" in the choices array below
+                                mandatory: [0],
                                 howMany: 2 // including the mandatory choices
                             },
                             choices: [
