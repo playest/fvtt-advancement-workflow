@@ -1,6 +1,6 @@
 This repository details my ideas about how to manage advancement of characters in DnD5e with FoundryVTT.
 
-You can see a glimps of what I want to achieve when you add levels to your class. A popup appears and you can choose which features to add to your character sheet among those proposed or not add anything.
+You can see a glimpse of what I want to achieve when you add levels to your class. A popup appears and you can choose which features to add to your character sheet among those proposed or not add anything.
 
 The realted issue tag on the [DnD5e system](https://gitlab.com/foundrynet/dnd5e/) seems to be [advancement](https://gitlab.com/foundrynet/dnd5e/-/issues?label_name%5B%5D=Advancement).
 
@@ -84,10 +84,11 @@ A choice has 2 state : not-made, made and not-interested.
 
 ## Edit
 
+I have not a lot to say here.
 
 ## Workflow
 
-**super-feature** and **advancement trigger**
+[See here](https://htmlpreview.github.io/?https://github.com/playest/fvtt-advancement-workflow/blob/main/advancement.html)
 
 # Weird Cases
 
@@ -130,8 +131,6 @@ An advancement trigger should be able to propose to:
     - Any other way
 - Should we really manage the whole workflow?
     - Maybe we should just focus on the data part and let the community develop modules for the edit and workflow parts?
-
-## Example 1 - a Cleric
 
 ## Ideas
 
